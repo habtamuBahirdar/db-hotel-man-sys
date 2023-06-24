@@ -1,0 +1,68 @@
+Sure, here's an example of how to create a hotel management system database using MySQL with 5 tables:
+
+1. Create the database and tables:
+
+CREATE DATABASE hotel_management;
+
+USE hotel_management;
+
+CREATE TABLE guests (
+  guest_id INT PRIMARY KEY,
+  first_name VARCHAR(50),
+  last_name VARCHAR(50),
+  email VARCHAR(100),
+  phone_number VARCHAR(20)
+);
+
+CREATE TABLE rooms (
+  room_number INT PRIMARY KEY,
+  room_type VARCHAR(50),
+  price DECIMAL(10,2),
+  max_occupancy INT
+);
+
+CREATE TABLE reservations (
+  reservation_id INT PRIMARY KEY,
+  guest_id INT,
+  room_number INT,
+  check_in_date DATE,
+  check_out_date DATE,
+  FOREIGN KEY (guest_id) REFERENCES guests(guest_id),
+  FOREIGN KEY (room_number) REFERENCES rooms(room_number)
+);
+
+CREATE TABLE employees (
+  employee_id INT PRIMARY KEY,
+  first_name VARCHAR(50),
+  last_name VARCHAR(50),
+  email VARCHAR(100),
+  phone_number VARCHAR(20),
+  hire_date DATE,
+  job_title VARCHAR(50),
+  salary DECIMAL(10,2)
+);
+
+CREATE TABLE shifts (
+  shift_id INT PRIMARY KEY,
+  employee_id INT,
+  start_time TIME,
+  end_time TIME,
+  shift_date DATE,
+  FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+);
+
+
+2. Enforce referential integrity on related tables:
+
+In the above example, referential integrity is enforced by adding foreign key constraints to the reservations and shifts tables that reference the guests and employees tables. This ensures that a reservation or shift cannot be created for a guest or employee that does not exist in the respective tables.
+
+3. Perform join operation on two tables:
+
+To perform a join operation on the reservations and guests tables, you can use the following query:
+
+SELECT reservations.reservation_id, guests.first_name, guests.last_name, reservations.check_in_date, reservations.check_out_date
+FROM reservations
+INNER JOIN guests ON reservations.guest_id = guests.guest_id;
+
+
+This will return a result set that includes the reservation ID, guest first and last name, and check-in and check-out dates for each reservation.
